@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+dist/
+
+# C files
+*.o
+*.so
+*.dylib
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sw[po]

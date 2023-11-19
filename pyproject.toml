@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "crimes"
+version = "0.1.0"
+description = "Import C files into Python, illegally."
+license = "Apache-2.0"
+authors = ["Eddie Antonio Santos <hello@eddieantonio.ca>"]
+readme = "README.md"
+packages = [{include = "crimes"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.7.0"
+isort = "^5.12.0"
+pytest = "^7.4.3"
+black = "^23.11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
