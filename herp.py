@@ -36,6 +36,7 @@ def compile_and_run(src):
     # TODO: save the object file to some tmp dir?
     # TODO: save the shared object to __pycache__?
     basename = Path(src).stem
+    object_name = f"{basename}.o"
     status = subprocess.run(
         [
             GCC,
@@ -43,7 +44,7 @@ def compile_and_run(src):
             "-fPIC",
             "-c",
             "-o",
-            f"{basename}.o",
+            object_name,
             src,
         ],
         capture_output=True,
@@ -59,7 +60,7 @@ def compile_and_run(src):
     # TODO: use distutils.ccompiler?
     # TODO: make this platform independent -- that could be done with distutils?
     status = subprocess.run(
-        [GCC, "-shared", "-o", f"lib{basename}.dylib", f"{basename}.o"],
+        [GCC, "-shared", "-o", f"lib{basename}.dylib", object_name],
         capture_output=True,
     )
     if status.returncode != 0:
