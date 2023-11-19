@@ -3,9 +3,7 @@ from __future__ import annotations
 import ctypes
 import json
 import subprocess
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, NotRequired, Optional, TypedDict
 
 from language_bender.gcc_diagnostics import GCCDiagnostic
 
@@ -32,26 +30,32 @@ def print_as_python(diagnostic: GCCDiagnostic):
     print(f"SyntaxError: {diagnostic.message}")
 
 
-src = "hello.c"
-# TODO: save the object file to some tmp dir?
-# TODO: save the shared object to __pycache__?
-status = subprocess.run(
-    ["gcc-13", "-fdiagnostics-format=json", "-fPIC", "-c", src], capture_output=True
-)
-pems = GCCDiagnostic.from_list(json.loads(status.stderr))
-if pems:
-    assert status.returncode != 0
-    print_as_python(pems[0])
-    # TODO: this should raise a SyntaxError/ImportError, whichever is more relevant
-assert status.returncode == 0
+def compile_and_run(src):
+    src = "hello.c"
+    # TODO: save the object file to some tmp dir?
+    # TODO: save the shared object to __pycache__?
+    status = subprocess.run(
+        ["gcc-13", "-fdiagnostics-format=json", "-fPIC", "-c", src], capture_output=True
+    )
+    pems = GCCDiagnostic.from_json_string(status.stderr)
+    if pems:
+        assert status.returncode != 0
+        print_as_python(pems[0])
+        # TODO: this should raise a SyntaxError/ImportError, whichever is more relevant
+    assert status.returncode == 0
 
-# Now link
-# TODO: use distutils.ccompiler?
-status = subprocess.run(
-    ["gcc-13", "-shared", "-o", "libhello.dylib", "hello.o"], capture_output=True
-)
-if status.returncode != 0:
-    raise NotImplementedError("linking failed and I don't know what to do")
+    # Now link
+    # TODO: use distutils.ccompiler?
+    status = subprocess.run(
+        ["gcc-13", "-shared", "-o", "libhello.dylib", "hello.o"], capture_output=True
+    )
+    if status.returncode != 0:
+        raise NotImplementedError("linking failed and I don't know what to do")
 
-libhello = ctypes.cdll.LoadLibrary("./libhello.dylib")
-libhello.hello()
+    libhello = ctypes.cdll.LoadLibrary("./libhello.dylib")
+    return libhello
+
+
+if __name__ == "__main__":
+    libhello = compile_and_run("hello.c")
+    libhello.hello()
