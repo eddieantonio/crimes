@@ -17,44 +17,27 @@ class CFinder(MetaPathFinder, Loader):
 
         p = Path(f"{fullname}.c")
         if not p.exists():
-            # Could not find anything
+            # Could not find the C source code file
             return
 
         return ModuleSpec(name=fullname, loader=self, loader_state={'path': p})
 
     def create_module(self, spec: ModuleSpec) -> ModuleType:
         module = ModuleType(spec.name)
+        # Place this here so that exec_module knows where to find the source code.
         module.__src_path__ = spec.loader_state['path']
         return module
 
     def exec_module(self, module: ModuleType) -> None:
         cdll = compile_and_run(str(module.__src_path__))
         module.__cdll__ = cdll
+        # TODO: get exported symbols... through nm? through debug symbols?
         module.hello = cdll.hello
 
 
+# Insert our Importer before all the others.
 sys.meta_path.insert(0, CFinder())
 
-# class CPathFinder(PathEntryFinder):
-#     def __init__(self, path: str):
-#         breakpoint()
-#
-#     def find_spec(self, fullname: str, target: ModuleType | None = ...) -> ModuleSpec | None:
-#         breakpoint()
-#         print(fullname)
-#         return None
-
-
-# del sys.path_importer_cache['/Users/eddie/Programming/language-bender']
-# sys.path_hooks.insert(0, lambda path: CPathFinder)
-
+# Now we can import our C file:
 from hello import hello as hello_from_c  # type: ignore
 hello_from_c()
-
-#libhello = compile_and_run("hello.c")
-#hello = ModuleType("hello")
-#hello.hello = libhello.hello
-#
-#hello.hello()
-
-
