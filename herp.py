@@ -31,11 +31,20 @@ def print_as_python(diagnostic: GCCDiagnostic):
 
 
 def compile_and_run(src):
-    src = "hello.c"
     # TODO: save the object file to some tmp dir?
     # TODO: save the shared object to __pycache__?
+    basename = Path(src).stem
     status = subprocess.run(
-        ["gcc-13", "-fdiagnostics-format=json", "-fPIC", "-c", src], capture_output=True
+        [
+            "gcc-13",
+            "-fdiagnostics-format=json",
+            "-fPIC",
+            "-c",
+            "-o",
+            f"{basename}.o",
+            src,
+        ],
+        capture_output=True,
     )
     pems = GCCDiagnostic.from_json_string(status.stderr)
     if pems:
@@ -46,13 +55,15 @@ def compile_and_run(src):
 
     # Now link
     # TODO: use distutils.ccompiler?
+    # TODO: make this platform independent -- that could be done with distutils?
     status = subprocess.run(
-        ["gcc-13", "-shared", "-o", "libhello.dylib", "hello.o"], capture_output=True
+        ["gcc-13", "-shared", "-o", f"lib{basename}.dylib", f"{basename}.o"],
+        capture_output=True,
     )
     if status.returncode != 0:
         raise NotImplementedError("linking failed and I don't know what to do")
 
-    libhello = ctypes.cdll.LoadLibrary("./libhello.dylib")
+    libhello = ctypes.cdll.LoadLibrary(f"./lib{basename}.dylib")
     return libhello
 
 
