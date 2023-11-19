@@ -59,14 +59,15 @@ def compile_and_run(src):
     # Now link
     # TODO: use distutils.ccompiler?
     # TODO: make this platform independent -- that could be done with distutils?
+    shared_library = f"lib{basename}.dylib"
     status = subprocess.run(
-        [GCC, "-shared", "-o", f"lib{basename}.dylib", object_name],
+        [GCC, "-shared", "-o", shared_library, object_name],
         capture_output=True,
     )
     if status.returncode != 0:
         raise NotImplementedError("linking failed and I don't know what to do")
 
-    return ctypes.cdll.LoadLibrary(f"./lib{basename}.dylib")
+    return ctypes.cdll.LoadLibrary(f"./{shared_library}")
 
 
 if __name__ == "__main__":
