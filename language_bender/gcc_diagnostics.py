@@ -39,7 +39,7 @@ class GCCDiagnostic:
         return [GCCDiagnostic.from_item(item) for item in parsed_items]
 
     @staticmethod
-    def from_json_string(json_str: str | bytes) -> GCCDiagnostic:
+    def from_json_string(json_str: str | bytes) -> list[GCCDiagnostic]:
         return GCCDiagnostic.from_list(json.loads(json_str))
 
 

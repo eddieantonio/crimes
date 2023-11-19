@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ctypes
-import json
 import subprocess
 from pathlib import Path
 
@@ -14,9 +13,8 @@ def print_as_python(diagnostic: GCCDiagnostic):
     caret = diagnostic.locations[0]["caret"]
     full_path = Path(caret.file).resolve()
     line_num = caret.line
-    # TODO: we're going to assume that the encoding of the file matches the encoding of
-    # the output.
-    column = caret.display_column
+    # TODO: be mindful of encodings.
+    # Right now, this code is assuming that the encoding of the file matches the encoding of the output.
     initial_space = " " * (caret.display_column - 1)
 
     with full_path.open() as f:
@@ -63,8 +61,7 @@ def compile_and_run(src):
     if status.returncode != 0:
         raise NotImplementedError("linking failed and I don't know what to do")
 
-    libhello = ctypes.cdll.LoadLibrary(f"./lib{basename}.dylib")
-    return libhello
+    return ctypes.cdll.LoadLibrary(f"./lib{basename}.dylib")
 
 
 if __name__ == "__main__":
