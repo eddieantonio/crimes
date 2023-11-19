@@ -6,6 +6,10 @@ from pathlib import Path
 
 from language_bender.gcc_diagnostics import GCCDiagnostic
 
+# This is the GCC that is installed on my machine right now.
+# -fdiagnostics-format=json was introduced in GCC 9.x
+GCC = "gcc-13"
+
 
 def print_as_python(diagnostic: GCCDiagnostic):
     # need absolute path to file
@@ -34,7 +38,7 @@ def compile_and_run(src):
     basename = Path(src).stem
     status = subprocess.run(
         [
-            "gcc-13",
+            GCC,
             "-fdiagnostics-format=json",
             "-fPIC",
             "-c",
@@ -55,7 +59,7 @@ def compile_and_run(src):
     # TODO: use distutils.ccompiler?
     # TODO: make this platform independent -- that could be done with distutils?
     status = subprocess.run(
-        ["gcc-13", "-shared", "-o", f"lib{basename}.dylib", f"{basename}.o"],
+        [GCC, "-shared", "-o", f"lib{basename}.dylib", f"{basename}.o"],
         capture_output=True,
     )
     if status.returncode != 0:
