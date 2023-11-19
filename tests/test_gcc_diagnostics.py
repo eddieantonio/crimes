@@ -183,7 +183,63 @@ TEST_CASES = [
         b'e1001.c", "line": 2, "display-column": 12, "byte-column": 12, "column": '
         b'12}, "finish": {"file": "01-e1001.c", "line": 2, "display-column": 15, "'
         b'byte-column": 15, "column": 15}}], "escape-source": false}]\n',
-        None,
+        [
+            GCCDiagnostic(
+                kind="error",
+                option=None,
+                locations=[
+                    {
+                        "caret": Position(
+                            file="01-e1001.c",
+                            line=2,
+                            display_column=12,
+                            byte_column=12,
+                            column=12,
+                        ),
+                        "finish": Position(
+                            file="01-e1001.c",
+                            line=2,
+                            display_column=15,
+                            byte_column=15,
+                            column=15,
+                        ),
+                    }
+                ],
+                message="'duck' undeclared (first use in this function)",
+                children=[
+                    GCCDiagnostic(
+                        kind="note",
+                        option=None,
+                        locations=[
+                            {
+                                "caret": Position(
+                                    file="01-e1001.c",
+                                    line=2,
+                                    display_column=12,
+                                    byte_column=12,
+                                    column=12,
+                                ),
+                                "finish": Position(
+                                    file="01-e1001.c",
+                                    line=2,
+                                    display_column=15,
+                                    byte_column=15,
+                                    column=15,
+                                ),
+                            }
+                        ],
+                        message="each undeclared identifier "
+                        "is reported only once for "
+                        "each function it appears in",
+                        children=[],
+                        column_origin=None,
+                        escape_source=False,
+                    )
+                ],
+                column_origin=1,
+                escape_source=False,
+            )
+        ],
     ),
     (
         b'[{"kind": "error", "message": "invalid type argument of \'->\' (have \''
@@ -231,7 +287,66 @@ TEST_CASES = [
         b'e \';\' token", "children": [], "column-origin": 1, "locations": [{"caret"'
         b': {"file": "19-e1015.c", "line": 2, "display-column": 1, "byte-column": '
         b'1, "column": 1}}], "escape-source": false}]\n',
-        None,
+        [
+            GCCDiagnostic(
+                kind="warning",
+                option=None,
+                locations=[
+                    {
+                        "caret": Position(
+                            file="19-e1015.c",
+                            line=1,
+                            display_column=17,
+                            byte_column=17,
+                            column=17,
+                        )
+                    }
+                ],
+                message='missing terminating " character',
+                children=[
+                    GCCDiagnostic(
+                        kind="error",
+                        option=None,
+                        locations=[
+                            {
+                                "caret": Position(
+                                    file="19-e1015.c",
+                                    line=1,
+                                    display_column=17,
+                                    byte_column=17,
+                                    column=17,
+                                )
+                            }
+                        ],
+                        message='missing terminating " ' "character",
+                        children=[],
+                        column_origin=None,
+                        escape_source=False,
+                    )
+                ],
+                column_origin=1,
+                escape_source=False,
+            ),
+            GCCDiagnostic(
+                kind="error",
+                option=None,
+                locations=[
+                    {
+                        "caret": Position(
+                            file="19-e1015.c",
+                            line=2,
+                            display_column=1,
+                            byte_column=1,
+                            column=1,
+                        )
+                    }
+                ],
+                message="expected expression before ';' token",
+                children=[],
+                column_origin=1,
+                escape_source=False,
+            ),
+        ],
     ),
     (
         b'[{"kind": "error", "message": "redefinition of \'number_of_quacks\'", "chi'
@@ -244,7 +359,63 @@ TEST_CASES = [
         b' 5, "byte-column": 5, "column": 5}, "finish": {"file": "20-e1020.c", "li'
         b'ne": 2, "display-column": 20, "byte-column": 20, "column": 20}}], "escap'
         b'e-source": false}]\n',
-        None,
+        [
+            GCCDiagnostic(
+                kind="error",
+                option=None,
+                locations=[
+                    {
+                        "caret": Position(
+                            file="20-e1020.c",
+                            line=2,
+                            display_column=5,
+                            byte_column=5,
+                            column=5,
+                        ),
+                        "finish": Position(
+                            file="20-e1020.c",
+                            line=2,
+                            display_column=20,
+                            byte_column=20,
+                            column=20,
+                        ),
+                    }
+                ],
+                message="redefinition of 'number_of_quacks'",
+                children=[
+                    GCCDiagnostic(
+                        kind="note",
+                        option=None,
+                        locations=[
+                            {
+                                "caret": Position(
+                                    file="20-e1020.c",
+                                    line=1,
+                                    display_column=5,
+                                    byte_column=5,
+                                    column=5,
+                                ),
+                                "finish": Position(
+                                    file="20-e1020.c",
+                                    line=1,
+                                    display_column=20,
+                                    byte_column=20,
+                                    column=20,
+                                ),
+                            }
+                        ],
+                        message="previous definition of "
+                        "'number_of_quacks' with type "
+                        "'int'",
+                        children=[],
+                        column_origin=None,
+                        escape_source=False,
+                    )
+                ],
+                column_origin=1,
+                escape_source=False,
+            )
+        ],
     ),
     (
         b'[{"kind": "error", "message": "expected identifier or \'(\' before \'{\''
@@ -706,7 +877,62 @@ TEST_CASES = [
         b'"display-column": 5, "byte-column": 5, "column": 5}, "finish": {"file": '
         b'"22-e1014.c", "line": 2, "display-column": 8, "byte-column": 8, "column"'
         b': 8}}], "escape-source": false}]\n',
-        None,
+        [
+            GCCDiagnostic(
+                kind="error",
+                option=None,
+                locations=[
+                    {
+                        "caret": Position(
+                            file="22-e1014.c",
+                            line=2,
+                            display_column=5,
+                            byte_column=5,
+                            column=5,
+                        ),
+                        "finish": Position(
+                            file="22-e1014.c",
+                            line=2,
+                            display_column=8,
+                            byte_column=8,
+                            column=8,
+                        ),
+                    }
+                ],
+                message="conflicting types for 'main'; have 'int(int,  char " "**)'",
+                children=[
+                    GCCDiagnostic(
+                        kind="note",
+                        option=None,
+                        locations=[
+                            {
+                                "caret": Position(
+                                    file="22-e1014.c",
+                                    line=1,
+                                    display_column=5,
+                                    byte_column=5,
+                                    column=5,
+                                ),
+                                "finish": Position(
+                                    file="22-e1014.c",
+                                    line=1,
+                                    display_column=8,
+                                    byte_column=8,
+                                    column=8,
+                                ),
+                            }
+                        ],
+                        message="previous declaration of "
+                        "'main' with type 'int(void)'",
+                        children=[],
+                        column_origin=None,
+                        escape_source=False,
+                    )
+                ],
+                column_origin=1,
+                escape_source=False,
+            )
+        ],
     ),
 ]
 

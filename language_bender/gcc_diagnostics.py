@@ -11,7 +11,7 @@ class GCCDiagnostic:
     See: https://gcc.gnu.org/onlinedocs/gcc-11.1.0/gcc/Diagnostic-Message-Formatting-Options.html
     """
 
-    kind: Literal["error", "warning"]
+    kind: Literal["error", "warning", "note"]
     # "If [kind] is warning, then there is an option key describing the command-line
     # option controlling the warning."
     option: Optional[str]
@@ -19,7 +19,7 @@ class GCCDiagnostic:
     locations: list[Location]
     message: str
     children: list[GCCDiagnostic]
-    column_origin: int
+    column_origin: Optional[int]
     escape_source: bool
 
     @staticmethod
@@ -27,9 +27,9 @@ class GCCDiagnostic:
         return GCCDiagnostic(
             kind=parsed_item["kind"],
             message=parsed_item["message"],
-            column_origin=parsed_item["column-origin"],
+            column_origin=parsed_item.get("column-origin"),
             locations=parse_locations(parsed_item["locations"]),
-            children=GCCDiagnostic.from_list(parsed_item["children"]),
+            children=GCCDiagnostic.from_list(parsed_item.get("children", ())),
             escape_source=parsed_item["escape-source"],
             option=parsed_item.get("option"),
         )
