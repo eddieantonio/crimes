@@ -16,5 +16,6 @@ import language_bender
 language_bender.install()
 
 from libhello import hello
-hello() # prints "Hello, world from C!"
+
+hello()  # prints "Hello, world from C!"
 ```

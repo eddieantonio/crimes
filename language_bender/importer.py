@@ -51,7 +51,7 @@ class CImporter(MetaPathFinder, Loader):
         module.__cdll__ = cdll
 
 
-def install():
+def install_importer():
     """
     Enable the import of C source code.
 
