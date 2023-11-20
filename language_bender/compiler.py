@@ -12,7 +12,7 @@ from language_bender.gcc_diagnostics import GCCDiagnostic
 GCC = "gcc-13"
 
 
-def compile_and_link(src):
+def compile_and_link(src: str) -> ctypes.CDLL:
     # TODO: save the object file to some tmp dir?
     # TODO: save the shared object to __pycache__?
     basename = Path(src).stem
@@ -43,7 +43,7 @@ def compile_and_link(src):
     # Now link
     # TODO: use distutils.ccompiler?
     # TODO: make this platform independent -- that could be done with distutils?
-    shared_library = f"lib{basename}.dylib"
+    shared_library = f"{basename}.dylib"
     status = subprocess.run(
         [GCC, "-shared", "-o", shared_library, object_name],
         capture_output=True,

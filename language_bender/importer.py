@@ -12,14 +12,11 @@ from language_bender.compiler import compile_and_link
 
 
 class CDLLModule(ModuleType):
-    __src_path__: str
-    __cdll__: CDLL | None
-
     def __init__(self, name: str, src_path: str):
         # Initialize this first to prevent fruitless recursive getattr() calls
         self.__cdll__: CDLL | None = None
         super().__init__(name)
-        self.__file__ = src_path
+        self.__file__: str = src_path
 
     def __getattr__(self, name):
         if self.__cdll__ is not None:
@@ -46,7 +43,6 @@ class CImporter(MetaPathFinder, Loader):
 
     def exec_module(self, module: ModuleType) -> None:
         assert isinstance(module, CDLLModule)
-        # TODO: catch CCompileError and do... something!
         cdll = compile_and_link(module.__file__)
         module.__cdll__ = cdll
 
