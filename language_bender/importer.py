@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 from ctypes import CDLL
 from importlib.abc import MetaPathFinder, Loader
 from importlib.machinery import ModuleSpec
@@ -26,7 +27,7 @@ class CDLLModule(ModuleType):
         raise AttributeError(name)
 
 
-class CFinder(MetaPathFinder, Loader):
+class CImporter(MetaPathFinder, Loader):
     def find_spec(
             self, fullname: str, path: Sequence | None, target: ModuleType | None = ...
     ) -> ModuleSpec | None:
@@ -43,5 +44,15 @@ class CFinder(MetaPathFinder, Loader):
         return module
 
     def exec_module(self, module: ModuleType) -> None:
+        # TODO: catch CCompileError and do... something!
         cdll = compile_and_run(str(module.__src_path__))
         module.__cdll__ = cdll
+
+
+def install():
+    """
+    Enable the import of C source code.
+
+    This works by inserting a Finder before all pre-existing finders in sys.meta_path.
+    """
+    sys.meta_path.insert(0, CImporter())
