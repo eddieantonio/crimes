@@ -12,7 +12,7 @@ from language_bender.gcc_diagnostics import GCCDiagnostic
 GCC = "gcc-13"
 
 
-def compile_and_run(src):
+def compile_and_link(src):
     # TODO: save the object file to some tmp dir?
     # TODO: save the shared object to __pycache__?
     basename = Path(src).stem

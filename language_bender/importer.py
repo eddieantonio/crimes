@@ -8,7 +8,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Sequence
 
-from language_bender.unorganized import compile_and_run
+from language_bender.compiler import compile_and_link
 
 
 class CDLLModule(ModuleType):
@@ -47,7 +47,7 @@ class CImporter(MetaPathFinder, Loader):
     def exec_module(self, module: ModuleType) -> None:
         assert isinstance(module, CDLLModule)
         # TODO: catch CCompileError and do... something!
-        cdll = compile_and_run(module.__file__)
+        cdll = compile_and_link(module.__file__)
         module.__cdll__ = cdll
 
 
