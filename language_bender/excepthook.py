@@ -10,9 +10,9 @@ original_except_hook = sys.excepthook
 
 
 def special_excepthook(
-        exception_type: type[BaseException],
-        exception_value: BaseException,
-        tb: Optional[TracebackType],
+    exception_type: type[BaseException],
+    exception_value: BaseException,
+    tb: Optional[TracebackType],
 ) -> None:
     if not isinstance(exception_value, CCompileError):
         return original_except_hook(exception_type, exception_value, tb)
@@ -32,7 +32,7 @@ def special_excepthook(
     # That should have been our frame from importer.py
     while frame := summary.pop():
         if "importlib" not in frame.filename and not frame.filename.endswith(
-                "language_bender/importer.py"
+            "language_bender/importer.py"
         ):
             break
 
@@ -58,11 +58,15 @@ def special_excepthook(
     )
     summary.append(fake_frame)
 
-    for line in summary.format():
-        print(line, end="", file=sys.stderr)
+    # Get Python's internals to print the exception line:
     te = traceback.TracebackException(
         exception_type, exception_value, None, compact=True
     )
+
+    # Everything is ready for printing!
+    print("Traceback (most recent call last):", file=sys.stderr)
+    for line in summary.format():
+        print(line, end="", file=sys.stderr)
     for line in te.format_exception_only():
         print(line, end="", file=sys.stderr)
 
