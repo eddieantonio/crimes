@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import sys
 from ctypes import CDLL
-from importlib.abc import MetaPathFinder, Loader
+from importlib.abc import Loader, MetaPathFinder
 from importlib.machinery import ModuleSpec
 from pathlib import Path
 from types import ModuleType
@@ -19,7 +19,7 @@ class CDLLModule(ModuleType):
         # Initialize this first to prevent fruitless recursive getattr() calls
         self.__cdll__: CDLL | None = None
         super().__init__(name)
-        self.__src_path__ = src_path
+        self.__file__ = src_path
 
     def __getattr__(self, name):
         if self.__cdll__ is not None:
@@ -29,23 +29,25 @@ class CDLLModule(ModuleType):
 
 class CImporter(MetaPathFinder, Loader):
     def find_spec(
-            self, fullname: str, path: Sequence | None, target: ModuleType | None = ...
+        self, fullname: str, path: Sequence | None, target: ModuleType | None = None
     ) -> ModuleSpec | None:
         p = Path(f"{fullname}.c")
         if not p.exists():
             # Could not find the C source code file
-            return
+            return None
 
-        return ModuleSpec(name=fullname, loader=self, loader_state={'path': p})
+        return ModuleSpec(
+            name=fullname, loader=self, loader_state={"path": str(p.resolve())}
+        )
 
-    def create_module(self, spec: ModuleSpec) -> ModuleType:
+    def create_module(self, spec: ModuleSpec) -> CDLLModule:
         # Pass both the name and the source code path so that exec_module knows where to find the source code.
-        module = CDLLModule(spec.name, spec.loader_state['path'])
-        return module
+        return CDLLModule(spec.name, spec.loader_state["path"])
 
     def exec_module(self, module: ModuleType) -> None:
+        assert isinstance(module, CDLLModule)
         # TODO: catch CCompileError and do... something!
-        cdll = compile_and_run(str(module.__src_path__))
+        cdll = compile_and_run(module.__file__)
         module.__cdll__ = cdll
 
 
