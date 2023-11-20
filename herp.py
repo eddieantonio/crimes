@@ -5,32 +5,10 @@ from types import TracebackType
 
 import language_bender
 from language_bender.exceptions import CCompileError
-from language_bender.gcc_diagnostics import GCCDiagnostic
 
 language_bender.install()
 
 original_except_hook = sys.excepthook
-
-
-def print_as_python(diagnostic: GCCDiagnostic):
-    # need absolute path to file
-    # line number
-    caret = diagnostic.locations[0]["caret"]
-    full_path = Path(caret.file).resolve()
-    line_num = caret.line
-    # TODO: be mindful of encodings.
-    # Right now, this code is assuming that the encoding of the file matches the encoding of the output.
-    initial_space = " " * (caret.display_column - 1)
-
-    with full_path.open() as f:
-        line = f.readlines()[line_num - 1].rstrip()
-
-    # TODO: how is Python creating this message, and I how can I hack myself into that?
-    # check traceback.py
-    print(f'  File "{full_path}", line {line_num}')
-    print(f"    {line}")
-    print(f"    {initial_space}^")
-    print(f"SyntaxError: {diagnostic.message}")
 
 
 def special_excepthook(
