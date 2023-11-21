@@ -18,6 +18,9 @@ def special_excepthook(
         return original_except_hook(exception_type, exception_value, tb)
 
     # Another idea is to use traceback.walk_stack() to yield stack frames
+    # TODO: use traceback.walk_stack() to yield stack frames
+    # crawl the stack, and build our own StackSummary/FrameSummary objects
+    # because with that, it's at least possible to get the module
     assert tb is not None
     summary = traceback.extract_tb(tb)
     # summary is in  "Most recent call last" order
