@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "language-bender"
+name = "crimes"
 version = "0.1.0"
 description = ""
-authors = ["Eddie Antonio Santos <eddie.santos@ucdconnect.ie>"]
+authors = ["Eddie Antonio Santos <hello@eddieantonio.ca>"]
 readme = "README.md"
-packages = [{include = "language_bender"}]
+packages = [{include = "crimes"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

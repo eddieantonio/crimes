@@ -8,7 +8,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Sequence
 
-from language_bender.compiler import compile_and_link
+from crimes.compiler import compile_and_link
 
 
 class CDLLModule(ModuleType):

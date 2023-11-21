@@ -4,7 +4,7 @@ from pathlib import Path
 from types import TracebackType
 from typing import Optional
 
-from language_bender.exceptions import CCompileError
+from crimes.exceptions import CCompileError
 
 original_except_hook = sys.excepthook
 
@@ -35,7 +35,7 @@ def special_excepthook(
     # That should have been our frame from importer.py
     while frame := summary.pop():
         if "importlib" not in frame.filename and not frame.filename.endswith(
-            "language_bender/importer.py"
+            "crimes/importer.py"
         ):
             break
 

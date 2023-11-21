@@ -5,8 +5,8 @@ import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from language_bender.exceptions import CCompileError
-from language_bender.gcc_diagnostics import GCCDiagnostic
+from crimes.exceptions import CCompileError
+from crimes.gcc_diagnostics import GCCDiagnostic
 
 # This is the GCC that is installed on my machine right now.
 # -fdiagnostics-format=json was introduced in GCC 9.x

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from language_bender.gcc_diagnostics import GCCDiagnostic
+from crimes.gcc_diagnostics import GCCDiagnostic
 
 
 class CError(Exception):

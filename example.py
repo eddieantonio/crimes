@@ -1,4 +1,4 @@
-import language_bender.autoinstall
+import crimes.autoinstall
 
 # isort: split
 

@@ -1,6 +1,6 @@
 import pytest
 
-from language_bender.gcc_diagnostics import GCCDiagnostic, Position
+from crimes.gcc_diagnostics import GCCDiagnostic, Position
 
 TEST_CASES = [
     (
