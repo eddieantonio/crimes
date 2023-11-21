@@ -61,3 +61,8 @@ Traceback (most recent call last):
                     ^
 crimes.exceptions.CCompileError: expected ';', ',' or ')' before '{' token
 ```
+
+# Copying
+
+Copyright © 2023 Eddie Antonio Santos. Apache-2.0 licensed. See
+`LICENSE` for details. _Especially_ the Disclaimer of Warranty!

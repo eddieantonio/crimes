@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "crimes"
 version = "0.1.0"
-description = ""
+description = "Import C files into Python, illegally."
+license = "Apache-2.0"
 authors = ["Eddie Antonio Santos <hello@eddieantonio.ca>"]
 readme = "README.md"
 packages = [{include = "crimes"}]
