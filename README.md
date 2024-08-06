@@ -64,7 +64,8 @@ crimes.exceptions.CCompileError: expected ';', ',' or ')' before '{' token
 
 # Install
 
-> [!WARNING] This is currently pretty hacky.
+> [!WARNING]
+> This is currently pretty hacky.
 > I provide absolutely no guarantee that this will work on your machine.
 > Here's how I got it working on my machine, which running macOS.
 > I highly doubt this library works at all on Windows.

@@ -6,6 +6,7 @@ license = "Apache-2.0"
 authors = ["Eddie Antonio Santos <hello@eddieantonio.ca>"]
 readme = "README.md"
 packages = [{include = "crimes"}]
+homepage = "https://github.com/eddieantonio/crimes"
 
 [tool.poetry.dependencies]
 python = "^3.11"
