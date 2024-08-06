@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "crimes"
-version = "0.1.0"
+version = "0.1.1"
 description = "Import C files into Python, illegally."
 license = "Apache-2.0"
 authors = ["Eddie Antonio Santos <hello@eddieantonio.ca>"]
