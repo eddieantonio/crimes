@@ -1,23 +1,29 @@
-[tool.poetry]
+[project]
 name = "crimes"
 version = "0.1.1"
 description = "Import C files into Python, illegally."
-license = "Apache-2.0"
-authors = ["Eddie Antonio Santos <hello@eddieantonio.ca>"]
+authors = [{ name = "Eddie Antonio Santos", email = "hello@eddieantonio.ca" }]
+requires-python = "~=3.11"
 readme = "README.md"
-packages = [{include = "crimes"}]
-homepage = "https://github.com/eddieantonio/crimes"
+license = "Apache-2.0"
 
-[tool.poetry.dependencies]
-python = "^3.11"
+[project.urls]
+Homepage = "https://github.com/eddieantonio/crimes"
 
+[dependency-groups]
+dev = [
+    "mypy>=1.7.0,<2",
+    "isort>=5.12.0,<6",
+    "pytest>=7.4.3,<8",
+    "black>=23.11.0,<24",
+]
 
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.7.0"
-isort = "^5.12.0"
-pytest = "^7.4.3"
-black = "^23.11.0"
+[tool.hatch.build.targets.sdist]
+include = ["crimes"]
+
+[tool.hatch.build.targets.wheel]
+include = ["crimes"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
