@@ -69,7 +69,16 @@ def _compiler() -> str:
     # Let's try a sample compile with -fdiagnostics-format=json
     try:
         status = subprocess.run(
-            [cc, "-fdiagnostics-format=json", "-c", "-x", "c", "/dev/null"],
+            [
+                cc,
+                "-fdiagnostics-format=json",
+                "-c",
+                "-x",
+                "c",
+                "/dev/null",
+                "-o",
+                "/dev/null",
+            ],
             capture_output=True,
             check=True,
         )
